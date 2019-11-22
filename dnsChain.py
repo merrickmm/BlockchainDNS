@@ -1,7 +1,10 @@
 import hashlib
 import datetime
 
+#Creates block object to be added to chain
 class dnsBlock():
+
+    #Initializes block object
     def __init__(self, index, ip, pHash):
         self.index = index
         self.timestamp = datetime.datetime.utcnow()
@@ -15,30 +18,27 @@ class dnsBlock():
         cHash = key.hexdigest()
         self.cHash = cHash
 
-def blockTest(index, ip, pHash):
-    block1 = dnsBlock(index, ip, pHash)
 
-    print(block1.index)
-    print(block1.timestamp)
-    print(block1.ip)
-    print(block1.pHash)
-    print(block1.cHash)
-
+#Creates Chain object
 class dnsChain():
 
+    #Initializes chain object
     def __init__(self): 
         self.blocks = [self.genesisBlock()]
-    
+
+    #Creates genesis block at index 0
     def genesisBlock(self): 
         return dnsBlock(0, 'Genesis', 'arbitrary')
 
-
+    #Adds block to chain, takes IP
     def addBlock(self, ip):
         self.blocks.append(dnsBlock(len(self.blocks), ip, self.blocks[len(self.blocks)-1].cHash))
 
+    #Returns size of chain in Blocks (excluding genesis)
     def getSize(self):
         return len(self.blocks)-1
 
+    #Verifies that data is consistent between blocks
     def verify(self): 
         flag = True
         for i in range(1,len(self.blocks)):
@@ -49,7 +49,7 @@ class dnsChain():
             else:
                 print(f'Right block index at block {i}.')
                 
-            if self.blocks[i-1].hash != self.blocks[i].previous_hash:
+            if self.blocks[i-1].cHash != self.blocks[i].pHash:
                 flag = False
                 print(f'Wrong previous hash at block {i} or current at {i-1}.')
             else:
@@ -60,6 +60,7 @@ class dnsChain():
                 print(f'Backdating at block {i}.')
             else:
                 print(f'No backdating at block {i}.')
+            print("")
                 
         return flag 
 

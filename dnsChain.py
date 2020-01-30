@@ -1,5 +1,6 @@
 import hashlib
 import datetime
+import csv
 
 #Creates block object to be added to chain
 class dnsBlock():
@@ -62,7 +63,41 @@ class dnsChain():
                 print(f'No backdating at block {i}.')
             print("")
                 
-        return flag 
+        return flag
+
+    #Writes chain to a CSV file
+    def chainWrite(self, cLen):
+        with open('chain.csv', 'w', newline='') as csvfile:
+            chainwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            chainwriter.writerow(['index', 'timestamp', 'ip', 'pHash', 'cHash'])
+            for i in range(cLen):
+                chainwriter.writerow([self.blocks[i].index, self.blocks[i].timestamp, self.blocks[i].ip, self.blocks[i].pHash, self.blocks[i].cHash])
+                print("success index ", i)
+
+    #Loads chain from CSV file
+    def chainRead(self):
+        with open('chain.csv', 'r', newline='') as csvfile:
+            chainreader = csv.reader(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            for idx, row in enumerate(chainreader):
+                if idx == 0:
+                    continue
+                elif idx == 1:
+                    blockList = row
+                    print(blockList)
+                    self.blocks[idx-1].index = blockList[0]
+                    self.blocks[idx-1].timestamp = blockList[1]
+                    self.blocks[idx-1].ip = blockList[2]
+                    self.blocks[idx-1].pHash = blockList[3]
+                    self.blocks[idx-1].cHash = blockList[4]
+                else:
+                    self.blocks.append(dnsBlock("test", "test", "test"))
+                    blockList = row
+                    print(blockList)
+                    self.blocks[idx-1].index = blockList[0]
+                    self.blocks[idx-1].timestamp = blockList[1]
+                    self.blocks[idx-1].ip = blockList[2]
+                    self.blocks[idx-1].pHash = blockList[3]
+                    self.blocks[idx-1].cHash = blockList[4]
 
 
 

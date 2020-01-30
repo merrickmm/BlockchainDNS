@@ -10,6 +10,8 @@ while run == True:
     print("\t[2] Add a block to a chain")
     print("\t[3] Print a chain")
     print("\t[4] Verify a chain")
+    print("\t[5] Output to CSV")
+    print("\t[6] Load chain from CSV")
     print("\t[E]xit")
     opt = input("")
 
@@ -21,6 +23,7 @@ while run == True:
     elif opt == "2":
         inIP = input("Enter the IP address: ")
         testBlock.addBlock(inIP)
+
 
     #Prints current block data of chain
     elif opt == "3":
@@ -36,6 +39,15 @@ while run == True:
     #Verifies block data in chain
     elif opt == "4":
         testBlock.verify()
+
+    #Outputs Chain to a CSV file
+    elif opt == "5":
+        length = testBlock.getSize()
+        testBlock.chainWrite(length)
+
+    #Loads Chain from a CSV file
+    elif opt == "6":
+        testBlock.chainRead()
 
     #Exits GUI
     elif opt == "E" or opt == "e":

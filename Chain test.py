@@ -1,14 +1,13 @@
 from dnsChain import *
 import socket
 
+recieved = "Recieved"
 def acceptData(s):
     conn, addr = s.accept()
     with conn:
         print('Connected by', addr)
-        while True:
-            data = conn.recv(1024)
-            print (data)
-            break
+        data = conn.recv(1024)
+    return (data)
                         
 #sets while conditional to true
 run = True
@@ -68,8 +67,9 @@ while run == True:
             s.bind((HOST, PORT))
             s.listen()
             while True:
-                acceptData(s)
-                    
+                data = acceptData(s)
+                print (data)
+                 
                    
                     
     #Exits GUI

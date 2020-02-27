@@ -1,4 +1,5 @@
 from dnsChain import *
+import socket
 
 #sets while conditional to true
 run = True
@@ -12,6 +13,7 @@ while run == True:
     print("\t[4] Verify a chain")
     print("\t[5] Output to CSV")
     print("\t[6] Load chain from CSV")
+    print("\t[7] Accept and print chain")
     print("\t[E]xit")
     opt = input("")
 
@@ -49,10 +51,31 @@ while run == True:
     elif opt == "6":
         testBlock.chainRead()
 
+    #Listens for chain update
+    elif opt == "7":
+        HOST = '127.0.0.1'  
+        PORT = 7023        
+
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.bind((HOST, PORT))
+            s.listen()
+            conn, addr = s.accept()
+            with conn:
+                print('Connected by', addr)
+                while True:
+                    data = conn.recv(1024)
+                    print (data)
+                    
+                   
+                    
     #Exits GUI
     elif opt == "E" or opt == "e":
         run = False
 
+    
     #Handles invalid input
     else:
         print("Invalid Option!")
+
+    
+    

@@ -1,6 +1,15 @@
 from dnsChain import *
 import socket
 
+def acceptData(s):
+    conn, addr = s.accept()
+    with conn:
+        print('Connected by', addr)
+        while True:
+            data = conn.recv(1024)
+            print (data)
+            break
+                        
 #sets while conditional to true
 run = True
 
@@ -55,16 +64,11 @@ while run == True:
     elif opt == "7":
         HOST = '127.0.0.1'  
         PORT = 7023        
-
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.bind((HOST, PORT))
             s.listen()
-            conn, addr = s.accept()
-            with conn:
-                print('Connected by', addr)
-                while True:
-                    data = conn.recv(1024)
-                    print (data)
+            while True:
+                acceptData(s)
                     
                    
                     

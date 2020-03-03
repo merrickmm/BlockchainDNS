@@ -66,9 +66,49 @@ while run == True:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.bind((HOST, PORT))
             s.listen()
-            while True:
-                data = acceptData(s)
-                print (data)
+            data = acceptData(s)
+            data2 = data.decode('utf-8')
+
+            #Splits sent data and determines length in blocks
+            info = data2.split()
+            points = len(info)
+            print (info)
+            print (points)
+            blockLen = int(points/6)
+            print (blockLen)
+
+            #Appednds to chain
+            ind = 0
+            for i in range(blockLen):
+                try:
+                    testBlock.blocks[i].index = info[ind]
+                    ind = ind + 1
+                    dat1 = info[ind]
+                    ind = ind + 1
+                    dat2 = info[ind]
+                    testBlock.blocks[i].timestamp = dat1 + " " + dat2
+                    ind = ind + 1
+                    testBlock.blocks[i].ip = info[ind]
+                    ind = ind + 1
+                    testBlock.blocks[i].pHash = info[ind]
+                    ind = ind + 1
+                    testBlock.blocks[i].cHash
+                    ind = ind + 1
+                except:
+                    testBlock.addBlock("test")
+                    testBlock.blocks[i].index = info[ind]
+                    ind = ind + 1
+                    dat1 = info[ind]
+                    ind = ind + 1
+                    dat2 = info[ind]
+                    testBlock.blocks[i].timestamp = dat1 + " " + dat2
+                    ind = ind + 1
+                    testBlock.blocks[i].ip = info[ind]
+                    ind = ind + 1
+                    testBlock.blocks[i].pHash = info[ind]
+                    ind = ind + 1
+                    testBlock.blocks[i].cHash
+                    ind = ind + 1
                  
                    
                     

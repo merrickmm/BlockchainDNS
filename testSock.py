@@ -31,8 +31,8 @@ def testPush():
             s.send(pHash.encode('utf-8'))
             s.send(space.encode('utf-8'))
             s.send(cHash.encode('utf-8'))
+            s.send(space.encode('utf-8'))
 
-            data = s.recv(1024)
-            time.sleep(2)
+            
 
 testPush()

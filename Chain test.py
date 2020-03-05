@@ -62,7 +62,7 @@ while run == True:
 
     #Listens for chain update
     elif opt == "7":
-        HOST = '127.0.0.1'  
+        HOST = ''  
         PORT = 7023        
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.bind((HOST, PORT))
@@ -115,8 +115,8 @@ while run == True:
     #Sends chain update
     elif opt == "8":   
         space = " "
-        HOST = '127.0.0.1'  # The server's hostname or IP address
-        PORT = 7023         # The port used by the server
+        HOST = input("specify IP ")  # The server's hostname or IP address
+        PORT = 7023                 # The port used by the server
         pushLength = testBlock.getSize() + 1
         print (length)
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

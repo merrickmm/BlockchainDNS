@@ -21,7 +21,8 @@ while run == True:
     print("\t[4] Verify a chain")
     print("\t[5] Output to CSV")
     print("\t[6] Load chain from CSV")
-    print("\t[7] Accept and print chain")
+    print("\t[7] Accepts chain from node")
+    print("\t[8] Sends current chain")
     print("\t[E]xit")
     opt = input("")
 
@@ -111,7 +112,33 @@ while run == True:
                     ind = ind + 1
                  
                    
-                    
+    #Sends chain update
+    elif opt == "8":   
+        space = " "
+        HOST = '127.0.0.1'  # The server's hostname or IP address
+        PORT = 7023         # The port used by the server
+        pushLength = testBlock.getSize() + 1
+        print (length)
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.connect((HOST, PORT))
+            for i in range(0, pushLength):
+                pushIndex = str(testBlock.blocks[i].index)
+                pushTimestamp = str(testBlock.blocks[i].timestamp)
+                pushIp = str(testBlock.blocks[i].ip)
+                pushPHash = str(testBlock.blocks[i].pHash)
+                pushCHash = str(testBlock.blocks[i].cHash)
+
+                s.send(pushIndex.encode('utf-8'))
+                s.send(space.encode('utf-8'))
+                s.send(pushTimestamp.encode('utf-8'))
+                s.send(space.encode('utf-8'))
+                s.send(pushIp.encode('utf-8'))
+                s.send(space.encode('utf-8'))
+                s.send(pushPHash.encode('utf-8'))
+                s.send(space.encode('utf-8'))
+                s.send(pushCHash.encode('utf-8'))
+                s.send(space.encode('utf-8'))
+        
     #Exits GUI
     elif opt == "E" or opt == "e":
         run = False

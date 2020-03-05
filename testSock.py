@@ -6,9 +6,9 @@ pushBlock = dnsChain()
 pushBlock.addBlock("192.168.1.1")
 pushBlock.addBlock("192.168.1.2")
 
-space = " "
             
 def testPush():    
+    space = " "
     HOST = '127.0.0.1'  # The server's hostname or IP address
     PORT = 7023         # The port used by the server
     length = pushBlock.getSize() + 1

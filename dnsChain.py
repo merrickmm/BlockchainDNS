@@ -6,10 +6,11 @@ import csv
 class dnsBlock():
 
     #Initializes block object
-    def __init__(self, index, ip, pHash):
+    def __init__(self, index, host, ip, pHash):
         self.index = index
         self.timestamp = datetime.datetime.utcnow()
         self.ip = ip
+        self.host = host
         self.pHash = pHash
         key = hashlib.sha256()
         key.update(str(self.index).encode('utf-8'))
@@ -29,11 +30,11 @@ class dnsChain():
 
     #Creates genesis block at index 0
     def genesisBlock(self): 
-        return dnsBlock(0, 'Genesis', 'arbitrary')
+        return dnsBlock(0, 'Genesis', 'arbitrary', 'arbitrary')
 
     #Adds block to chain, takes IP
-    def addBlock(self, ip):
-        self.blocks.append(dnsBlock(len(self.blocks), ip, self.blocks[len(self.blocks)-1].cHash))
+    def addBlock(self, host, ip):
+        self.blocks.append(dnsBlock(len(self.blocks), host, ip, self.blocks[len(self.blocks)-1].cHash))
 
     #Returns size of chain in Blocks (excluding genesis)
     def getSize(self):
@@ -69,9 +70,9 @@ class dnsChain():
     def chainWrite(self, cLen):
         with open('chain.csv', 'w', newline='') as csvfile:
             chainwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            chainwriter.writerow(['index', 'timestamp', 'ip', 'pHash', 'cHash'])
+            chainwriter.writerow(['index', 'timestamp', 'host', 'ip', 'pHash', 'cHash'])
             for i in range(cLen):
-                chainwriter.writerow([self.blocks[i].index, self.blocks[i].timestamp, self.blocks[i].ip, self.blocks[i].pHash, self.blocks[i].cHash])
+                chainwriter.writerow([self.blocks[i].index, self.blocks[i].timestamp, self.blocks[i].host, self.blocks[i].ip, self.blocks[i].pHash, self.blocks[i].cHash])
                 print("success index ", i)
 
     #Loads chain from CSV file
@@ -86,18 +87,20 @@ class dnsChain():
                     print(blockList)
                     self.blocks[idx-1].index = blockList[0]
                     self.blocks[idx-1].timestamp = blockList[1]
-                    self.blocks[idx-1].ip = blockList[2]
-                    self.blocks[idx-1].pHash = blockList[3]
-                    self.blocks[idx-1].cHash = blockList[4]
+                    self.blocks[idx-1].host = blockList[2]
+                    self.blocks[idx-1].ip = blockList[3]
+                    self.blocks[idx-1].pHash = blockList[4]
+                    self.blocks[idx-1].cHash = blockList[5]
                 else:
-                    self.blocks.append(dnsBlock("test", "test", "test"))
+                    self.blocks.append(dnsBlock("test", "test", "test", "test"))
                     blockList = row
                     print(blockList)
                     self.blocks[idx-1].index = blockList[0]
                     self.blocks[idx-1].timestamp = blockList[1]
-                    self.blocks[idx-1].ip = blockList[2]
-                    self.blocks[idx-1].pHash = blockList[3]
-                    self.blocks[idx-1].cHash = blockList[4]
+                    self.blocks[idx-1].host = blockList[2]
+                    self.blocks[idx-1].ip = blockList[3]
+                    self.blocks[idx-1].pHash = blockList[4]
+                    self.blocks[idx-1].cHash = blockList[5]
 
 
 

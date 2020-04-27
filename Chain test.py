@@ -15,7 +15,7 @@ run = True
 #start GUI loop and prints options
 while run == True:
     print("Select one of the following options: ")
-    print("\t[1] Create a new chain (Must be ran before option 2, 3, or 4)")
+    print("\t[1] Create a new chain (Must be ran first)")
     print("\t[2] Add a block to a chain")
     print("\t[3] Print a chain")
     print("\t[4] Verify a chain")
@@ -32,8 +32,9 @@ while run == True:
         
     #Adds block to chain with given IP
     elif opt == "2":
+        inHost = input ("Enter the hostname: ")
         inIP = input("Enter the IP address: ")
-        testBlock.addBlock(inIP)
+        testBlock.addBlock(inHost, inIP)
 
 
     #Prints current block data of chain
@@ -42,6 +43,7 @@ while run == True:
         for i in range(0, length):
             print ("Index: ", testBlock.blocks[i].index)
             print (f"\tTimestamp: ", testBlock.blocks[i].timestamp)
+            print (f"\tHost: ", testBlock.blocks[i].host)
             print (f"\tIP: ", testBlock.blocks[i].ip)
             print (f"\tPrevious Hash: ", testBlock.blocks[i].pHash)
             print (f"\tCurrent Hash: ", testBlock.blocks[i].cHash)
@@ -54,10 +56,11 @@ while run == True:
     #Outputs Chain to a CSV file
     elif opt == "5":
         length = testBlock.getSize()
-        testBlock.chainWrite(length)
+        testBlock.chainWrite(length + 1)
 
     #Loads Chain from a CSV file
     elif opt == "6":
+        testBlock = dnsChain()
         testBlock.chainRead()
 
     #Listens for chain update
@@ -75,7 +78,7 @@ while run == True:
             points = len(info)
             print (info)
             print (points)
-            blockLen = int(points/6)
+            blockLen = int(points/7)
             print (blockLen)
 
             #Appednds to chain
@@ -89,14 +92,16 @@ while run == True:
                     dat2 = info[ind]
                     testBlock.blocks[i].timestamp = dat1 + " " + dat2
                     ind = ind + 1
+                    testBolck.blocks[i].host = info[ind]
+                    ind = ind + 1
                     testBlock.blocks[i].ip = info[ind]
                     ind = ind + 1
                     testBlock.blocks[i].pHash = info[ind]
                     ind = ind + 1
-                    testBlock.blocks[i].cHash
+                    testBlock.blocks[i].cHash = info[ind]
                     ind = ind + 1
                 except:
-                    testBlock.addBlock("test")
+                    testBlock.addBlock("test", "test")
                     testBlock.blocks[i].index = info[ind]
                     ind = ind + 1
                     dat1 = info[ind]
@@ -104,11 +109,13 @@ while run == True:
                     dat2 = info[ind]
                     testBlock.blocks[i].timestamp = dat1 + " " + dat2
                     ind = ind + 1
+                    testBolck.blocks[i].host = info[ind]
+                    ind = ind + 1
                     testBlock.blocks[i].ip = info[ind]
                     ind = ind + 1
                     testBlock.blocks[i].pHash = info[ind]
                     ind = ind + 1
-                    testBlock.blocks[i].cHash
+                    testBlock.blocks[i].cHash = info[ind]
                     ind = ind + 1
                  
                    
@@ -124,6 +131,7 @@ while run == True:
             for i in range(0, pushLength):
                 pushIndex = str(testBlock.blocks[i].index)
                 pushTimestamp = str(testBlock.blocks[i].timestamp)
+                pushHost = str(testBlock.blocks[i].host)
                 pushIp = str(testBlock.blocks[i].ip)
                 pushPHash = str(testBlock.blocks[i].pHash)
                 pushCHash = str(testBlock.blocks[i].cHash)
@@ -131,6 +139,8 @@ while run == True:
                 s.send(pushIndex.encode('utf-8'))
                 s.send(space.encode('utf-8'))
                 s.send(pushTimestamp.encode('utf-8'))
+                s.send(space.encode('utf-8'))
+                s.send(pushHost.encode('utf-8'))
                 s.send(space.encode('utf-8'))
                 s.send(pushIp.encode('utf-8'))
                 s.send(space.encode('utf-8'))

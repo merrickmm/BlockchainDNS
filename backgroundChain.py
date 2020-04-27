@@ -54,16 +54,14 @@ def update(block, IPAddr, hostname, network):
             cLen = block.getSize()
             time.sleep(2)
             if upLen <= cLen:
-                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                    s.connect((upIP, 7024))
+                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
                     pushLen = str(IPAddr) + " " + "F"
-                    s.send(pushLen.encode('utf-8'))
-                continue
+                    s.sendto(pushLen.encode('utf-8'),(upIP))
+                break
             else:
-                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                    s.connect((upIP, 7024))
+                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
                     pushLen = str(IPAddr) + " " + str(cLen)
-                    s.send(pushLen.encode('utf-8'))
+                    s.sendto(pushLen.encode('utf-8'),(upIP))
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     s.bind((upIP, 7023))
                     s.listen()

@@ -10,7 +10,7 @@ def acceptData(s):
     return (data)
 
 while True:
-    try:
+    #try:
         testBlock = dnsChain()
         testBlock.chainRead()
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
@@ -20,6 +20,7 @@ while True:
             info = data2.split()
         time.sleep(2)
         if info[1] == "U":
+            print("hit")
             cLen = testBlock.getSize()
             sendIP = info[0]
             time.sleep(2)
@@ -34,12 +35,29 @@ while True:
             time.sleep(2)
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     s.connect((sendIP, 7023))
-                    pushLen = str(IPAddr) + " " + str(cLen)
-                    s.send(pushLen.encode('utf-8'))
+                    space = " "
+                    pushIndex = str(testBlock.blocks[i].index)
+                    pushTimestamp = str(testBlock.blocks[i].timestamp)
+                    pushHost = str(testBlock.blocks[i].host)
+                    pushIp = str(testBlock.blocks[i].ip)
+                    pushPHash = str(testBlock.blocks[i].pHash)
+                    pushCHash = str(testBlock.blocks[i].cHash)
+
+                    s.send(pushIndex.encode('utf-8'))
+                    s.send(space.encode('utf-8'))
+                    s.send(pushTimestamp.encode('utf-8'))
+                    s.send(space.encode('utf-8'))
+                    s.send(pushHost.encode('utf-8'))
+                    s.send(space.encode('utf-8'))
+                    s.send(pushIp.encode('utf-8'))
+                    s.send(space.encode('utf-8'))
+                    s.send(pushPHash.encode('utf-8'))
+                    s.send(space.encode('utf-8'))
+                    s.send(pushCHash.encode('utf-8'))
             
-    except:
-        time.sleep(5)
-        pass
+    #except:
+        #time.sleep(5)
+        #pass
         
         
         
